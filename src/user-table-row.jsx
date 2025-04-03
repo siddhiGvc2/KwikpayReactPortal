@@ -251,8 +251,11 @@ const handleChange = () => {
 
   }
 
-  const online = a => moment().diff(moment.utc((a.lastHeartBeatTime)), 'minute') < 10;
-
+  const online = a => {
+    if (!a?.lastHeartBeatTime) return false; // Ensure valid timestamp
+    return moment().diff(moment.utc(a.lastHeartBeatTime), 'minute') < 10;
+  };
+  
 
 
   return (
@@ -304,7 +307,9 @@ const handleChange = () => {
                                         </div>
      
                             </tr> */}
-                             <tr ><th style={{color: '#444',display:'flex',justifyContent:'space-between'}}>Status <td style={{color: '#444'}} >  <Label color={(!online(m)  && 'error') || 'success'}>{online(m) ? 'Online' : 'Offline'}</Label></td></th>  <td /> </tr>
+                             <tr ><th style={{color: '#444',display:'flex',justifyContent:'space-between'}}>Status <td style={{color: '#444'}} >  <Label color={online(m) ? 'success' : 'error'}>{online(m) ? 'Online' : 'Offline'}</Label></td></th>  <td /> </tr>
+                          
+
                                <tr>
                                   <th style={{display:'flex',justifyContent:'space-between'}}>   
                                     <div className="col-xl-4 col-lg-7 col-md-7 col-12 col-12 my-2 mx-3">
