@@ -1,5 +1,5 @@
 
-const API = "http://snackboss-iot.in:6000";
+const API = "process.env.REACT_APP_API";
 
 export const SSNInfo=async(startDate,endDate)=> {
   
@@ -14,7 +14,7 @@ export const SSNInfo=async(startDate,endDate)=> {
         "Content-type":"application/json",
         'x-token': sessionStorage.getItem('token'),
       });
-      const response = await fetch(`${API}/add/getSSN`, { method: 'POST', headers ,body:JSON.stringify(obj) });
+      const response = await fetch(``${API}/add/getSSN`, { method: 'POST', headers ,body:JSON.stringify(obj) });
       const json = await response.json();
       return json.data.obj;
     } catch (error) {

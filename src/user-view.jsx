@@ -21,7 +21,7 @@ import Typography from '@mui/material/Typography';
 
 // import { emptyRows} from '../utils';
 
-import {getTestMode, setTestMode,AllMacAddress} from './_mock/macAddress';
+import {AllMacAddress} from './_mock/macAddress';
 // import Iconify from 'src/components/iconify';
 
 // import TableNoData from '../table-no-data';
@@ -106,10 +106,7 @@ export default function KwikpayBoards() {
       
     })
 
-    getTestMode().then((res)=>{
-
-      setIsChecked(res.testMode);
-    })
+   
 
     const Interval=setInterval(()=>{
       AllMacAddress().then((res)=>{
@@ -147,11 +144,7 @@ export default function KwikpayBoards() {
         
         
       })
-      getTestMode().then((res)=>{
-      
-           setIsChecked(res.testMode);
-       
-     })
+  
 
     },500)
 
@@ -238,11 +231,7 @@ export default function KwikpayBoards() {
     })
   };
 
-  const handleChange = () => {
-    setTestMode();
-   
-  };
-
+  
   // const handleChangePage = (event, newPage) => {
   //   setPage(newPage);
   // };

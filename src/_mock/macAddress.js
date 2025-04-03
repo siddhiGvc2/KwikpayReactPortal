@@ -3,7 +3,7 @@
 // import { store } from "../Redux/store";
 // import { saveData } from "../Redux/action";
 
-// const API = import.meta.env.VITE_REACT_SERVER_API;
+const API = process.env.REACT_APP_API;
 
 export const AllMacAddress=async()=> {
   
@@ -12,7 +12,7 @@ export const AllMacAddress=async()=> {
         'x-token': sessionStorage.getItem('token'),
       });
 
-      const response = await fetch(`http://snackboss-iot.in:6000/kwikpay/getMacAddress`, { method: 'GET', headers });
+      const response = await fetch(`${API}/kwikpay/getMacAddress`, { method: 'GET', headers });
       const json = await response.json();
       // console.log(json)
       return json.data;
@@ -31,7 +31,7 @@ export const AllMacAddress=async()=> {
       });
       const city=JSON.parse(sessionStorage.getItem("cities"));
 
-      const response = await fetch(`http://snackboss-iot.in:6000/kwikpay/getData?city=${city.join()}`, { method: 'GET', headers });
+      const response = await fetch(`${API}/kwikpay/getData?city=${city.join()}`, { method: 'GET', headers });
       const json = await response.json();
 
       // store.dispatch(saveData(json.data));
@@ -50,7 +50,7 @@ export const AllMacAddress=async()=> {
       const headers = new Headers({
         'x-token': sessionStorage.getItem('token'),
       });
-      const response = await fetch(`http://snackboss-iot.in:6000/kwikpay/getTestMode`, { method: 'GET', headers });
+      const response = await fetch(`${API}/kwikpay/getTestMode`, { method: 'GET', headers });
       const json = await response.json();
       // console.log(json)
       return json.data;
@@ -63,7 +63,7 @@ export const AllMacAddress=async()=> {
 
   export const setTestMode=()=>{
   
-    fetch(`http://snackboss-iot.in:6000/kwikpay/setTestMode`,{
+    fetch(`${API}/kwikpay/setTestMode`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -83,7 +83,7 @@ export const AllMacAddress=async()=> {
       type
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/sendFota`,{
+    fetch(`${API}/kwikpay/sendFota`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -102,7 +102,7 @@ export const AllMacAddress=async()=> {
       
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/reset`,{
+    fetch(`${API}/kwikpay/reset`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -122,7 +122,7 @@ export const AllMacAddress=async()=> {
       UserName:name
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/sendV`,{
+    fetch(`${API}/kwikpay/sendV`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -140,7 +140,7 @@ export const AllMacAddress=async()=> {
       socketNumber:port
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/sendFW`,{
+    fetch(`${API}/kwikpay/sendFW`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -158,7 +158,7 @@ export const AllMacAddress=async()=> {
       socketNumber:port
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/sendTC`,{
+    fetch(`${API}/kwikpay/sendTC`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -176,7 +176,7 @@ export const AllMacAddress=async()=> {
       socketNumber:port
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/sendTV`,{
+    fetch(`${API}/kwikpay/sendTV`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -195,7 +195,7 @@ export const AllMacAddress=async()=> {
       UserName:name
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/sendFotaUrl`,{
+    fetch(`${API}/kwikpay/sendFotaUrl`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -213,7 +213,7 @@ export const AllMacAddress=async()=> {
       UserName:name
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/askUrl`,{
+    fetch(`${API}/kwikpay/askUrl`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -232,7 +232,7 @@ export const AllMacAddress=async()=> {
       UnixTS
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/sendCC`,{
+    fetch(`${API}/kwikpay/sendCC`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -250,7 +250,7 @@ export const AllMacAddress=async()=> {
       UserName:name,
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/askCC`,{
+    fetch(`${API}/kwikpay/askCC`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -269,7 +269,7 @@ export const AllMacAddress=async()=> {
       QR
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/sendQR`,{
+    fetch(`${API}/kwikpay/sendQR`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -287,7 +287,7 @@ export const AllMacAddress=async()=> {
       UserName:name,
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/askQR`,{
+    fetch(`${API}/kwikpay/askQR`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -306,7 +306,7 @@ export const AllMacAddress=async()=> {
     
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/sendIMG`,{
+    fetch(`${API}/kwikpay/sendIMG`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -323,7 +323,7 @@ export const AllMacAddress=async()=> {
       UserName:name,
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/askStatus`,{
+    fetch(`${API}/kwikpay/askStatus`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -342,7 +342,7 @@ export const AllMacAddress=async()=> {
       SerialNumber:SN
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/setSN`,{
+    fetch(`${API}/kwikpay/setSN`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -359,7 +359,7 @@ export const AllMacAddress=async()=> {
       Message:data
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/sendMessage`,{
+    fetch(`${API}/kwikpay/sendMessage`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -378,7 +378,7 @@ export const AllMacAddress=async()=> {
       PassThru:SN
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/sendPassThru`,{
+    fetch(`${API}/kwikpay/sendPassThru`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -396,7 +396,7 @@ export const AllMacAddress=async()=> {
     
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/checkPassThru`,{
+    fetch(`${API}/kwikpay/checkPassThru`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -415,7 +415,7 @@ export const AllMacAddress=async()=> {
       Erase:SN
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/setErase`,{
+    fetch(`${API}/kwikpay/setErase`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -434,7 +434,7 @@ export const AllMacAddress=async()=> {
       LNumber:SN
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/setL`,{
+    fetch(`${API}/kwikpay/setL`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -452,7 +452,7 @@ export const AllMacAddress=async()=> {
     
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/checkErase`,{
+    fetch(`${API}/kwikpay/checkErase`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -471,7 +471,7 @@ export const AllMacAddress=async()=> {
     
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/checkSN`,{
+    fetch(`${API}/kwikpay/checkSN`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -490,7 +490,7 @@ export const AllMacAddress=async()=> {
       PairNumber:SN
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/setPair`,{
+    fetch(`${API}/kwikpay/setPair`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -508,7 +508,7 @@ export const AllMacAddress=async()=> {
     
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/checkPair`,{
+    fetch(`${API}/kwikpay/checkPair`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -529,7 +529,7 @@ export const AllMacAddress=async()=> {
       UserName:name
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/sendLight`,{
+    fetch(`${API}/kwikpay/sendLight`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -548,7 +548,7 @@ export const AllMacAddress=async()=> {
       UserName:name
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/sendHBT`,{
+    fetch(`${API}/kwikpay/sendHBT`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -568,7 +568,7 @@ export const AllMacAddress=async()=> {
       UserName:name
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/sendSIP`,{
+    fetch(`${API}/kwikpay/sendSIP`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -587,7 +587,7 @@ export const AllMacAddress=async()=> {
       UserName:name
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/sendSSID`,{
+    fetch(`${API}/kwikpay/sendSSID`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -605,7 +605,7 @@ export const AllMacAddress=async()=> {
       UserName:name
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/askSSID`,{
+    fetch(`${API}/kwikpay/askSSID`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -623,7 +623,7 @@ export const AllMacAddress=async()=> {
       UserName:name
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/sendPWD`,{
+    fetch(`${API}/kwikpay/sendPWD`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -642,7 +642,7 @@ export const AllMacAddress=async()=> {
       UserName:name
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/sendSSID1`,{
+    fetch(`${API}/kwikpay/sendSSID1`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -660,7 +660,7 @@ export const AllMacAddress=async()=> {
       UserName:name
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/sendPWD1`,{
+    fetch(`${API}/kwikpay/sendPWD1`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -680,7 +680,7 @@ export const AllMacAddress=async()=> {
       UserName:name
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/sendCA`,{
+    fetch(`${API}/kwikpay/sendCA`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -698,7 +698,7 @@ export const AllMacAddress=async()=> {
       UserName:name
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/askCA`,{
+    fetch(`${API}/kwikpay/askCA`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -716,7 +716,7 @@ export const AllMacAddress=async()=> {
       UserName:name
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/askSIP`,{
+    fetch(`${API}/kwikpay/askSIP`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -734,7 +734,7 @@ export const AllMacAddress=async()=> {
       UserName:name
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/modeTest1`,{
+    fetch(`${API}/kwikpay/modeTest1`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -752,7 +752,7 @@ export const AllMacAddress=async()=> {
       UserName:name
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/modeTest2`,{
+    fetch(`${API}/kwikpay/modeTest2`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -770,7 +770,7 @@ export const AllMacAddress=async()=> {
       UserName:name
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/modeTest3`,{
+    fetch(`${API}/kwikpay/modeTest3`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -788,7 +788,7 @@ export const AllMacAddress=async()=> {
       UserName:name
   
     }
-    fetch(`http://snackboss-iot.in:6000/kwikpay/modeNone`,{
+    fetch(`${API}/kwikpay/modeNone`,{
       method:'POST',
       headers:{
         'Content-type':'application/json'
@@ -808,7 +808,7 @@ export const AllMacAddress=async()=> {
         'x-token': sessionStorage.getItem('token'),
       });
 
-      const response = await fetch(`http://snackboss-iot.in:6000/kwikpayTesting/getOutPuts`, { method: 'GET', headers });
+      const response = await fetch(`${API}/kwikpayTesting/getOutPuts`, { method: 'GET', headers });
       const json = await response.json();
       // console.log(json)
       return json.data;
@@ -832,7 +832,7 @@ export const AllMacAddress=async()=> {
       'Content-Type': 'application/json',
       'x-token': sessionStorage.getItem('token'),
     });
-    const response = await fetch(`http://snackboss-iot.in:6000/testingBoard/sendG1`, { method: 'POST', headers,body:JSON.stringify(obj) });
+    const response = await fetch(`${API}/testingBoard/sendG1`, { method: 'POST', headers,body:JSON.stringify(obj) });
     const json = await response.json();
     // console.log(json)
     return json.data;
@@ -852,7 +852,7 @@ export const AllMacAddress=async()=> {
       'Content-Type': 'application/json',
       'x-token': sessionStorage.getItem('token'),
     });
-    const response = await fetch(`http://snackboss-iot.in:6000/testingBoard/sendG2`, { method: 'POST', headers,body:JSON.stringify(obj) });
+    const response = await fetch(`${API}/testingBoard/sendG2`, { method: 'POST', headers,body:JSON.stringify(obj) });
     const json = await response.json();
     // console.log(json)
     return json.data;
@@ -871,7 +871,7 @@ export const AllMacAddress=async()=> {
       'Content-Type': 'application/json',
       'x-token': sessionStorage.getItem('token'),
     });
-    const response = await fetch(`http://snackboss-iot.in:6000/testingBoard/sendG3`, { method: 'POST', headers,body:JSON.stringify(obj) });
+    const response = await fetch(`${API}/testingBoard/sendG3`, { method: 'POST', headers,body:JSON.stringify(obj) });
     const json = await response.json();
     // console.log(json)
     return json.data;
@@ -891,7 +891,7 @@ export const AllMacAddress=async()=> {
       'Content-Type': 'application/json',
       'x-token': sessionStorage.getItem('token'),
     });
-    const response = await fetch(`http://snackboss-iot.in:6000/testingBoard/sendI`, { method: 'POST', headers,body:JSON.stringify(obj) });
+    const response = await fetch(`${API}/testingBoard/sendI`, { method: 'POST', headers,body:JSON.stringify(obj) });
     const json = await response.json();
     // console.log(json)
     return json.data;
@@ -911,7 +911,7 @@ export const AllMacAddress=async()=> {
       'Content-Type': 'application/json',
       'x-token': sessionStorage.getItem('token'),
     });
-    const response = await fetch(`http://snackboss-iot.in:6000/testingBoard/sendGF`, { method: 'POST', headers,body:JSON.stringify(obj) });
+    const response = await fetch(`${API}/testingBoard/sendGF`, { method: 'POST', headers,body:JSON.stringify(obj) });
     const json = await response.json();
     // console.log(json)
     return json.data;
@@ -931,7 +931,7 @@ export const AllMacAddress=async()=> {
       'Content-Type': 'application/json',
       'x-token': sessionStorage.getItem('token'),
     });
-    const response = await fetch(`http://snackboss-iot.in:6000/testingBoard/sendQ`, { method: 'POST', headers,body:JSON.stringify(obj) });
+    const response = await fetch(`${API}/testingBoard/sendQ`, { method: 'POST', headers,body:JSON.stringify(obj) });
     const json = await response.json();
     // console.log(json)
     return json.data;
@@ -951,7 +951,7 @@ export const AllMacAddress=async()=> {
       'Content-Type': 'application/json',
       'x-token': sessionStorage.getItem('token'),
     });
-    const response = await fetch(`http://snackboss-iot.in:6000/testingBoard/sendQ1`, { method: 'POST', headers,body:JSON.stringify(obj) });
+    const response = await fetch(`${API}/testingBoard/sendQ1`, { method: 'POST', headers,body:JSON.stringify(obj) });
     const json = await response.json();
     // console.log(json)
     return json.data;
@@ -973,7 +973,7 @@ export const AllMacAddress=async()=> {
       'Content-Type': 'application/json',
       'x-token': sessionStorage.getItem('token'),
     });
-    const response = await fetch(`http://snackboss-iot.in:6000/kwikpay/sendD`, { method: 'POST', headers,body:JSON.stringify(obj) });
+    const response = await fetch(`${API}/kwikpay/sendD`, { method: 'POST', headers,body:JSON.stringify(obj) });
     const json = await response.json();
     // console.log(json)
     return json.data;
@@ -995,7 +995,7 @@ export const AllMacAddress=async()=> {
       'Content-Type': 'application/json',
       'x-token': sessionStorage.getItem('token'),
     });
-    const response = await fetch(`http://snackboss-iot.in:6000/kwikpay/sendVS`, { method: 'POST', headers,body:JSON.stringify(obj) });
+    const response = await fetch(`${API}/kwikpay/sendVS`, { method: 'POST', headers,body:JSON.stringify(obj) });
     const json = await response.json();
     // console.log(json)
     return json.data;

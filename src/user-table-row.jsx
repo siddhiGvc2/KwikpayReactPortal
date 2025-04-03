@@ -24,7 +24,7 @@ import {setL,sendD,sendV,askCA,askCC,askQR,setSN,askSIP,sendVS,sendCA,sendCC,sen
 import Label from './components/label';
 // import { Y } from 'dist/assets/index-8d78d312';
 
-
+const API=process.env.REACT_APP_API;
 
 const Alert = React.forwardRef((props, ref) => (
   <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
@@ -217,7 +217,7 @@ const handleChange = () => {
     UserName:sessionStorage.getItem("name")
 
   }
-  fetch(`http://snackboss-iot.in:6000/kwikpay/saveINHoutput`,{
+  fetch(`${API}/kwikpay/saveINHoutput`,{
     method:'POST',
     headers:{
       'Content-type':'application/json'
@@ -304,7 +304,32 @@ const handleChange = () => {
                                         </div>
      
                             </tr> */}
-                            <tr ><th style={{color: '#444',display:'flex',justifyContent:'space-between'}}>Status <td style={{color: '#444'}} >  <Label color={(!online(m)  && 'error') || 'success'}>{online(m) ? 'Online' : 'Offline'}</Label></td></th>  <td /> </tr>
+                             <tr ><th style={{color: '#444',display:'flex',justifyContent:'space-between'}}>Status <td style={{color: '#444'}} >  <Label color={(!online(m)  && 'error') || 'success'}>{online(m) ? 'Online' : 'Offline'}</Label></td></th>  <td /> </tr>
+                               <tr>
+                                  <th style={{display:'flex',justifyContent:'space-between'}}>   
+                                    <div className="col-xl-4 col-lg-7 col-md-7 col-12 col-12 my-2 mx-3">
+                                    <div className="row">
+                                            <div className="col-12 sw-parent">
+                                               <h5>SEND DATA</h5>
+                                            
+                                              <input type='text' style={{width:'200px'}} placeholder='message' onChange={(e)=>setData(e.target.value)}/>
+                                              <button disabled={disable} type="button"   className={`btn btn-${board===1?m.Color:''} btn-info text-white `}  style={{height:"30px",width:'60px',fontSize:'12px'}}  onClick={()=>sendMessage(m.MacID,m.SocketNumber,data)} >
+                                              SEND
+                                          </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <td>
+                                  <Typography>
+                                  <p> Message</p>
+                                  {m.MessageOutput}
+                                  </Typography>
+                                    </td>
+                                  </th>
+                                  <td />  
+                                
+                                </tr>
+                           
                             <tr>
                                   <th style={{display:'flex',justifyContent:'space-between'}}>   
                                     <div className="col-xl-5 col-lg-7 col-md-8 col-12 col-12 my-2 mx-3 ">
@@ -1262,30 +1287,7 @@ const handleChange = () => {
                                 </td>
         
                               </tr> 
-                              <tr>
-                                  <th style={{display:'flex',justifyContent:'space-between'}}>   
-                                    <div className="col-xl-4 col-lg-7 col-md-7 col-12 col-12 my-2 mx-3">
-                                    <div className="row">
-                                            <div className="col-12 sw-parent">
-                                               <h5>SEND DATA</h5>
-                                            
-                                              <input type='text' style={{width:'200px'}} placeholder='message' onChange={(e)=>setData(e.target.value)}/>
-                                              <button disabled={disable} type="button"   className={`btn btn-${board===1?m.Color:''} btn-info text-white `}  style={{height:"30px",width:'60px',fontSize:'12px'}}  onClick={()=>sendMessage(m.MacID,m.SocketNumber,data)} >
-                                              SEND
-                                          </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <td>
-                                  <Typography>
-                                  <p> Message</p>
-                                  {m.MessageOutput}
-                                  </Typography>
-                                    </td>
-                                  </th>
-                                  <td />  
-                                
-                                </tr>
+                           
                                                                                                             
                             </tbody>
                         </table>

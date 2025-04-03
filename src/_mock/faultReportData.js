@@ -1,5 +1,5 @@
 
-const API = "http://snackboss-iot.in:6000";
+const API = process.env.REACT_APP_API;
 
 export const FaultReportData=async(startDate,endDate)=> {
   
