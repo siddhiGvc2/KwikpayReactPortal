@@ -60,7 +60,7 @@ export default function UserTableRow({
 
         <TableCell>{row.TCResponse}</TableCell>
     
-        {/* <TableCell>
+        <TableCell>
         {new Date(row.createdAt).toLocaleString('en-US', {
           timeZone: 'Asia/Kolkata',
           day: '2-digit',
@@ -71,9 +71,9 @@ export default function UserTableRow({
           second: '2-digit',
           hour12: true,
         })}
-      </TableCell> */}
+      </TableCell>
 
-      <TableCell>
+      {/* <TableCell>
       {new Date(row.createdAt).toLocaleString('en-GB', {
         timeZone: 'Europe/London',
         day: '2-digit',
@@ -84,7 +84,7 @@ export default function UserTableRow({
         second: '2-digit',
         hour12: true,
       })}
-    </TableCell>
+    </TableCell> */}
 
 
         
