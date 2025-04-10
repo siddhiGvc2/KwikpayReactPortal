@@ -1,11 +1,11 @@
 import logo from './logo.svg';
-import KwikpayBoards from './user-view';
+import KwikpayReport from './user-view';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-    <KwikpayBoards/>
+    <KwikpayReport/>
     </div>
   );
 }

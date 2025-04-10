@@ -1,189 +1,198 @@
-// import $ from 'jquery';
-import moment from "moment";
+import $ from 'jquery';
+import moment from 'moment';
 import Select from 'react-select';
-import {useState, useEffect} from 'react';
+import React, { useState,useEffect,} from 'react';
 
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-// import Stack from '@mui/material/Stack';
-// import Table from '@mui/material/Table';
-// import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import Modal from '@mui/material/Modal';
+import Table from '@mui/material/Table';
+import MuiAlert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 import Container from '@mui/material/Container';
-// import TableBody from '@mui/material/TableBody';
+import TableBody from '@mui/material/TableBody';
 import Typography from '@mui/material/Typography';
+import TableContainer from '@mui/material/TableContainer';
+import TablePagination from '@mui/material/TablePagination';
 
-// import TableContainer from '@mui/material/TableContainer';
-// import TablePagination from '@mui/material/TablePagination';
+import { GetClentNameDetails} from './_mock/customers';
+import { mapping,AllMachines} from './_mock/AllMachines';
 
-// import { users } from 'src/_mock/user';
-// import {GetClentNameDetails} from 'src/_mock/customers';
+import { AllTcResponse } from './_mock/Kwikpay';
 
-// import Scrollbar from 'src/components/scrollbar';
+import Scrollbar from './components/scrollbar';
 
-// import { emptyRows} from '../utils';
-
-import {AllMacAddress} from './_mock/macAddress';
-// import Iconify from 'src/components/iconify';
-
-// import TableNoData from '../table-no-data';
+import TableNoData from './table-no-data';
 import UserTableRow from './user-table-row';
+import UserTableHead from './user-table-head';
+import TableEmptyRows from './table-empty-rows';
+import UserTableToolbar from './user-table-toolbar';
+import { emptyRows, applyFilter, getComparator } from './utils';
 
-// import UserTableHead from '../user-table-head';
-// import TableEmptyRows from '../table-empty-rows';
-// import UserTableToolbar from '../user-table-toolbar';
-// import {  applyFilter, getComparator } from '../utils';
-// ----------------------------------------------------------------------
 
-export default function KwikpayBoards() {
+const Alert = React.forwardRef((props, ref) => (
+  <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+));
 
-  const [options1,setOptions1]=useState([]);
-  const [options2,setOptions2]=useState([]);
-  const [options3,setOptions3]=useState([]);
+const style = {
+  position: 'absolute' ,
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid white',
+  boxShadow: 24,
+  pt: 2,
+  px: 4,
+  pb: 3,
+};
 
-  const [selectedOption1, setSelectedOption1] = useState({id:-1});
-  const [selectedOption2, setSelectedOption2] = useState({id:-1});
-  const [selectedOption3, setSelectedOption3] = useState({id:-1});
+//  Users ui started here
 
-  const [value1,setValue1]=useState({});
-  const [value2,setValue2]=useState({});
-  const [value3,setValue3]=useState({});
+export default function KwikpayReport() {
+  const [startDate,setStartDate]=useState(moment().format('YYYY-MM-DD'));
+  const [endDate,setEndDate]=useState(moment().format('YYYY-MM-DD'));
+  const[machines,setMachines]=useState([]);
+  const [selectedOption, setSelectedOption] = useState([]);
+  const [options,setOptions]=useState([]);
+  const [cInfo,setCInfo]=useState(["City","Zone","Ward","Beat"]);
+  
+  const [page, setPage] = useState(0);
 
-  const [isChecked, setIsChecked] = useState(false);
-
-  // const [page, setPage] = useState(0);
-
-  // const [order] = useState('asc');
+  const [order, setOrder] = useState('asc');
 
   const [selected, setSelected] = useState([]);
 
-  // const [orderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('name');
 
-  // const [filterName, setFilterName] = useState('');
+  const [filterName, setFilterName] = useState('');
 
-  // const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const [data,setData]=useState([])
+  const [openModal, setOpenModal] = useState(false);
 
-  const online = a => moment().diff(moment.utc((a.lastHeartBeatTime)), 'minute') < 10;
+  const [showAlert, setShowAlert] = useState(false);
+  const [message,setMessage]=useState("");
+  const [type,setType]=useState("");
+  const showAlertMessage = () => {
+      setShowAlert(true);
+  
+      // You can optionally set a timeout to hide the alert after a few seconds
+      setTimeout(() => {
+      setShowAlert(false);
+      }, 5000); // Hide the alert after 5 seconds (5000 milliseconds)
+  };
 
-  useEffect(()=>{
-    
-    AllMacAddress().then((res)=>{
-
-      const filteredData=res.filter((elem)=> online(elem) );
-      setData(filteredData);
-
-      const formattedData = filteredData.map((option,i) => ({
-        value: option.MacID,
-        label: option.MacID,
-        id:i
-      }));
-
-    
-
-      setOptions1(formattedData);
-     
-      setOptions2(formattedData);
-
-      setOptions3(formattedData);
-      // console.log(selectedOption1.id>=0);
-      if(selectedOption1.id>=0)
-        {
-          // console.log(res[selectedOption1.id]);
-          setValue1(filteredData[selectedOption1.id]);
-         
-        }
-        if(selectedOption2.id>=0)
-          {
-            setValue2(filteredData[selectedOption2.id]);
-          }
-
-          if(selectedOption3.id>=0)
-            {
-              setValue3(filteredData[selectedOption3.id]);
-            }
-     
-      
-      
-    })
-
+  const handleModalOpen = () => {
    
+ 
+    setOpenModal(true);
+    // setTimeout(()=>{
+         
+    //   $('#mdlPwd [name="name"]').val(row.name);
+    //   $('#mdlPwd [name="email"]').val(row.email);
+    // },200)
+  };
+  const handleModalClose = () => {
+    setOpenModal(false);
+    setTimeout(()=>{
+      $('[name="machine"]').val('').trigger('change');
+      $('[name="uid"]').val('').trigger('change');
+      $('[name="city"]').val('Mumbai').trigger('change');
+      $('[name="installedOn"]').val('').trigger('change');
+    },200)
+  };
 
-    const Interval=setInterval(()=>{
-      AllMacAddress().then((res)=>{
-    
-        const filteredData=res.filter((elem)=> online(elem) );
-        setData(filteredData);
-        const formattedData = filteredData.map((option,i) => ({
-          value: option.MacID,
-          label: option.MacID,
-          id:i
-        }));
+useEffect(()=>{
+  AllTcResponse(startDate,endDate).then((res)=>{
+    setMachines(res);
+   })
+  setInterval(()=>{
+    AllTcResponse(startDate,endDate).then((res)=>{
+      setMachines(res);
+     })
+
+  },4000)
   
-      
-  
-        setOptions1(formattedData);
-       
-        setOptions2(formattedData);
-
-        setOptions3(formattedData);
-        // console.log(selectedOption1.id>=0);
-        if(selectedOption1.id>=0)
-          {
-            // console.log(res[selectedOption1.id]);
-            setValue1(filteredData[selectedOption1.id]);
-           
-          }
-          if(selectedOption2.id>=0)
-            {
-              setValue2(filteredData[selectedOption2.id]);
-            }
-            if(selectedOption3.id>=0)
-              {
-                setValue3(filteredData[selectedOption3.id]);
-              }
-        
-        
-      })
-  
-
-    },500)
+},[])
 
 
 
-  
-
-    return()=>{
-      clearInterval(Interval);
-    }
  
 
-  },[selectedOption1,selectedOption2,selectedOption3])
+//  createMapping submit form function
+  const SubmitForm=()=>{
+   const obj={
+    machine: selectedOption.value,
+    uid: $('[name="uid"]').val(),
+    city: $('[name="city"]').val(),
+    installedOn: $('[name="installedOn"]').val(),
+   }
+   
+   if (!obj.machine) {
+    showAlertMessage();
+    setType("warning");
+    setMessage("Invalid Machine Number") 
+     
+     }
+   else if (!obj.uid) { 
+    showAlertMessage();
+    setType("warning");
+    setMessage("Invalid Uid") 
+     
+  }
+   else if (!obj.city) {
 
+    showAlertMessage();
+    setType("warning");
+    setMessage("Please select city") 
+    }
+   else if (!obj.installedOn) {
+    showAlertMessage();
+    setType("warning");
+    setMessage("Please seclect date") 
+    }
+    else{
+      mapping(obj).then((r)=>{
+        showAlertMessage();
+        setType("success");
+        setMessage("Successfully Created") ;
+        handleModalClose();
+      })
+    }
+   
+   
+   
   
-  
 
-  // const handleSort = (event, id) => {
-  //   const isAsc = orderBy === id && order === 'asc';
-  //   if (id !== '') {
-  //     setOrder(isAsc ? 'desc' : 'asc');
-  //     setOrderBy(id);
-  //   }
-  // };
 
-  // const handleSelectAllClick = (event) => {
-  //   if (event.target.checked) {
-  //     const newSelecteds = dataFiltered.map((n) => n.name);
-  //     setSelected(newSelecteds);
-  //     return;
-  //   }
-  //   setSelected([]);
-  // };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  }
+ 
+  const handleSort = (event, id) => {
+    const isAsc = orderBy === id && order === 'asc';
+    if (id !== '') {
+      setOrder(isAsc ? 'desc' : 'asc');
+      setOrderBy(id);
+    }
+  };
+
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      const newSelecteds = machines.map((n) => n.name);
+      setSelected(newSelecteds);
+      return;
+    }
+    setSelected([]);
+  };
+
+  const handleClick = (event, n) => {
+    const selectedIndex = selected.indexOf(n);
     let newSelected = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, n);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -197,161 +206,244 @@ export default function KwikpayBoards() {
     setSelected(newSelected);
   };
 
-  const handleSelectChange1 = (elem) => {
-    setSelectedOption1(elem);
-    
+
+  const handleSelectChange = (elem) => {
+    setSelectedOption(elem);
+  };
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setPage(0);
+    setRowsPerPage(parseInt(event.target.value, 10));
+  };
+
+  const handleFilterByName = (event) => {
+    setPage(0);
+    setFilterName(event.target.value);
+  };
+
+  const dataFiltered = applyFilter({
+    inputData: machines,
+    comparator: getComparator(order, orderBy),
+    filterName,
+  });
+
+  const notFound = !dataFiltered.length && !!filterName;
+
+
+ 
    
-    AllMacAddress().then((res)=>{
-    
-      const filteredData=res.filter((m)=> online(m) )
-      console.log(filteredData)
-      setData(filteredData);
-      console.log(data);
-      // setValue1(res[elem.id]);
-      
-    })
-  };
-  const handleSelectChange2 = (elem) => {
-    setSelectedOption2(elem);
-    AllMacAddress().then((res)=>{
-      const filteredData=res.filter((m)=> online(m) )
-      console.log(filteredData)
-      setData(filteredData);
-      
-    })
-  };
-
-  const handleSelectChange3 = (elem) => {
-    setSelectedOption3(elem);
-    AllMacAddress().then((res)=>{
-      const filteredData=res.filter((m)=> online(m) )
-      console.log(filteredData)
-      setData(filteredData);
-      
-    })
-  };
-
+   
   
-  // const handleChangePage = (event, newPage) => {
-  //   setPage(newPage);
-  // };
+  
 
-  // const handleChangeRowsPerPage = (event) => {
-  //   setPage(0);
-  //   setRowsPerPage(parseInt(event.target.value, 10));
-  // };
+   
 
-  // const handleFilterByName = (event) => {
-  //   // setPage(0);
-  //   setFilterName(event.target.value);
-  // };
+  return <>
+     {/* Popup message */}
+      <Stack spacing={2} sx={{ width: '100%' }}>
+    
+    <Snackbar  anchorOrigin={{ vertical:'top', horizontal:'right' }} open={showAlert} autoHideDuration={4000} onClose={()=>setShowAlert(false)}>
+      <Alert onClose={()=>setShowAlert(false)} severity={type} sx={{ width: '100%' }}>
+        {message}
+      </Alert>
+    </Snackbar>
 
-  // const dataFiltered = applyFilter({
-  //   inputData: data,
-  //   comparator: getComparator(order, orderBy),
-  //   filterName,
-  // });
+     </Stack>
+  
+    <Container maxWidth="xxl">
+      {/* createMapping button */}
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+        <Typography variant="h5">Kwikpay Transactions</Typography>
+        {/* <button type='button' className="btn btn-sm btn-warning mx-2 text-white float-right" id="btn-mapping" onClick={handleModalOpen}>Create
+                        Mapping</button> */}
 
-  // const notFound = !dataFiltered.length && !!filterName;
-
-  return (
-    <Container maxWidth='xxl'>
+        {/* <Button variant="contained" color="inherit"  onClick={handleOpenMenu} startIcon={<Iconify icon="eva:plus-fill" />}>
+          New User
+        </Button> */}
+         <Stack direction="row" justifyContent="flex-end" spacing={2} className="p-3">
+         <div className="d-flex flex-column me-2">
+      <h5>Start Date:</h5>
+      <input
+        type="date"
+        className="form-control"
+        defaultValue={new Date().toISOString().split('T')[0]}
+        name="startDate"
+        min="2023-07-08"
+        onChange={(e) => setStartDate(e.target.value)}
+      />
+    </div>
+    <div className="d-flex flex-column">
+      <h5>End Date:</h5>
+      <input
+        type="date"
+        className="form-control"
+        defaultValue={new Date().toISOString().split('T')[0]}
+        name="endDate"
+        min="2023-07-08"
+        onChange={(e) => setEndDate(e.target.value)}
+      />
+    </div>
+    </Stack>
+      </Stack>
      
-     <Card  spacing={2}  sx={{padding:'20px', justifyContent:'center'}}>
-      <Typography variant="h4" sx={{ mb: 5 }}>
-      Boards
-      </Typography>
-      <div className="row">
-                    <div className="col-md-4">
-                        <div className="form-group my-2">
-                            <h6>Board1:</h6>
-                            <Select
-                                name="board1"
-                                value={selectedOption1}
-                                onChange={handleSelectChange1}
-                                options={options1}
-                                isSearchable // Equivalent to isSearchable={true}
-                                placeholder="Select option..."
-                            />
-                            {/* <input type="text" className="form-control" name="machine" /> */}
-                            <div className="invalid-feedback"/>
-                        </div>
-                    </div>
-                    <div className="col-md-4">
-                        <div className="form-group my-2">
-                            <h6>Board2:</h6>
-                            <Select
-                                name="board2"
-                                value={selectedOption2}
-                                onChange={handleSelectChange2}
-                                options={options2}
-                                isSearchable // Equivalent to isSearchable={true}
-                                placeholder="Select option..."
-                            />
-                            {/* <input type="text" className="form-control" name="machine" /> */}
-                            <div className="invalid-feedback"/>
-                        </div>
-                    </div>
-                    <div className="col-md-4">
-                        <div className="form-group my-2">
-                            <h6>Board3:</h6>
-                            <Select
-                                name="board3"
-                                value={selectedOption3}
-                                onChange={handleSelectChange3}
-                                options={options3}
-                                isSearchable // Equivalent to isSearchable={true}
-                                placeholder="Select option..."
-                            />
-                            {/* <input type="text" className="form-control" name="machine" /> */}
-                            <div className="invalid-feedback"/>
-                        </div>
-                    </div>
-              </div>
-          
-              <div className='row'>
-                 <div className="col-md-4">
-                  <UserTableRow
-                      key={value1.id}
-                     
-                      testMode={isChecked}
-                      board={1}
-                      m={value1}
-                   
-                      handleClick={(event) => handleClick(event, value1.UID)}
-                    />
-                  </div>
-                  <div className="col-md-4">
-                  <UserTableRow
-                      key={value2.id}
+   
+ 
+      {/* <Stack spacing={2} sx={{ width: '100%' }}>
+    
+    <Snackbar  anchorOrigin={{ vertical:'top', horizontal:'right' }} open={showAlert} autoHideDuration={4000} onClose={()=>setShowAlert(false)}>
+      <Alert onClose={()=>setShowAlert(false)} severity={type} sx={{ width: '100%' }}>
+        {message}
+      </Alert>
+    </Snackbar>
 
-                      testMode={isChecked}
-                      m={value2}
-                      board={2}
-                      handleClick={(event) => handleClick(event, value2.UID)}
-                    />
-                  </div>
-                  <div className="col-md-4">
-                  <UserTableRow
-                      key={value3.id}
+     </Stack> */}
 
-                      testMode={isChecked}
-                      m={value3}
-                      board={3}
-                      handleClick={(event) => handleClick(event, value3.UID)}
-                    />
-                  </div>
-
-              </div>
-        
-        {/* <UserTableToolbar
+      <Card>
+   
+        <UserTableToolbar
           numSelected={selected.length}
           filterName={filterName}
           onFilterName={handleFilterByName}
-        /> */}
+          style={{ marginTop: '-2.5rem' }} // equivalent to mt: -10
+        />
+          
+        <Scrollbar>
+          <TableContainer sx={{ overflow: 'unset' }}>
+            <Table sx={{ minWidth: 800 }}>
+              {/* Table heading */}
+              <UserTableHead
+                order={order}
+                orderBy={orderBy}
+                rowCount={machines.length}
+                numSelected={selected.length}
+                onRequestSort={handleSort}
+                onSelectAllClick={handleSelectAllClick}
+                headLabel={[
+                  { id: 'id', label: 'Sr.No' },
+                  { id: 'devceId', label: 'Serial Number'},
+                  { id: 'TCresponse', label: 'TC RESPONSE' },
+                  { id: 'date', label: `Date & Time` },
+               
+               
+                ]}
+              />
+              {/* Table Body */}
+              <TableBody>
+                {dataFiltered
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row,i) => (
+                    <UserTableRow
+                      sr={page*rowsPerPage+i+1}
+                      key={row.id}
+                      name={row.name}
+                      role={row.role}
+                      email={row.email}
+                      city={row.city}
+                      zone={row.zone}
+                      ward={row.ward}
+                      beat={row.beat}
+                      row={row}
+                      // isVerified={row.isVerified}
+                      // selected={selected.indexOf(row.name) !== -1}
+                      handleClick={(event) => handleClick(event, row.name)}
+                    />
+                  ))}
 
-       
+                <TableEmptyRows
+                  height={77}
+                  emptyRows={emptyRows(page, rowsPerPage, machines.length)}
+                />
+
+                {notFound && <TableNoData query={filterName} />}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Scrollbar>
+
+        <TablePagination
+          page={page}
+          component="div"
+          count={machines.length}
+          rowsPerPage={rowsPerPage}
+          onPageChange={handleChangePage}
+          rowsPerPageOptions={[5, 10, 25 ,100]}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </Card>
     </Container>
-  );
+    <Modal
+        open={openModal}
+        onClose={handleModalClose}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+      >
+        <Box sx={{ ...style, width: 500 }}>
+        <div className="modal-dialog" role="document">
+        <div className="modal-content">
+            <div className="modal-header">
+                <h5 className="modal-title">Create Mapping</h5>
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" onClick={handleModalClose}>&times;</span>
+                </button>
+            </div>
+            <div className="modal-body">
+                <div className="row">
+                    <div className="col-md-6">
+                        <div className="form-group my-2">
+                            <h6>Machine No. (PCB No.):</h6>
+                            <Select
+                                name="machine"
+                                value={selectedOption}
+                                onChange={handleSelectChange}
+                                options={options}
+                                isSearchable // Equivalent to isSearchable={true}
+                                placeholder="Select option..."
+                            />
+                            {/* <input type="text" className="form-control" name="machine" /> */}
+                            <div className="invalid-feedback"/>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="form-group my-2">
+                            <h6>UID:</h6>
+                            <input type="text" className="form-control" name="uid" />
+                            <div className="invalid-feedback"/>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="form-group my-2">
+                            <h6>City:</h6>
+                            <select className="form-control" name="city">
+                                <option value="Mumbai" selected>Mumbai</option>
+                                <option value="Delhi">Delhi</option>
+                                <option value="SS-UK">SS-UK</option>
+                                <option value="DoE-HAR">DoE-HAR</option>
+
+                            </select>
+                            <div className="invalid-feedback"/>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="form-group my-2">
+                            <h6>Installed On:</h6>
+                            <input className="form-control" type="date" name="installedOn" />
+                            <div className="invalid-feedback"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="modal-footer">
+                <button type="button" className="btn btn-primary" onClick={SubmitForm}>Save changes</button>
+                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={handleModalClose}>Close</button>
+            </div>
+        </div>
+    </div>
+
+        </Box>
+        </Modal>
+  
+  </>
 }
