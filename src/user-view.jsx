@@ -110,14 +110,16 @@ useEffect(()=>{
   AllTcResponse(startDate,endDate).then((res)=>{
     setMachines(res);
    })
-  setInterval(()=>{
+  const Interval=setInterval(()=>{
     AllTcResponse(startDate,endDate).then((res)=>{
       setMachines(res);
      })
 
   },4000)
+
+  return ()=>clearInterval(Interval);
   
-},[])
+},[startDate,endDate])
 
 
 
