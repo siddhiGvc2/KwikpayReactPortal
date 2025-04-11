@@ -35,7 +35,7 @@ export function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-export function applyFilter({ inputData, comparator, filterName }) {
+export function applyFilter({ inputData, comparator, filterName, command }) {
   const stabilizedThis = inputData.map((el, index) => [el, index]);
 
   stabilizedThis.sort((a, b) => {
@@ -46,14 +46,30 @@ export function applyFilter({ inputData, comparator, filterName }) {
 
   inputData = stabilizedThis.map((el) => el[0]);
 
+  // Filter by filterName
   if (filterName) {
-    inputData= inputData.filter((item) => {
-      const lowerCaseSearchTerm = filterName.toLowerCase();
-      return Object.values(item).some((value) =>
+    const lowerCaseSearchTerm = filterName.toLowerCase();
+    inputData = inputData.filter((item) =>
+      Object.values(item).some((value) =>
         String(value).toLowerCase().includes(lowerCaseSearchTerm)
-      );
+      )
+    );
+  }
+
+  // Filter by command (e.g., exact match on a certain field)
+  if (command) {
+    inputData = inputData.filter((item) => {
+      const values = Object.values(item).map((v) => String(v).toLowerCase());
+  
+      if (command === "V") {
+        return values.some((v) => v.includes("v") || v.includes("t-ok"));
+      }
+  
+      return values.some((v) => v.includes(command.toLowerCase()));
     });
   }
+  
 
   return inputData;
 }
+

@@ -52,6 +52,7 @@ const style = {
 //  Users ui started here
 
 export default function KwikpayReport() {
+  const [command,setCommand]=useState('');
   const [startDate,setStartDate]=useState(moment().format('YYYY-MM-DD'));
   const [endDate,setEndDate]=useState(moment().format('YYYY-MM-DD'));
   const[machines,setMachines]=useState([]);
@@ -228,6 +229,7 @@ useEffect(()=>{
     inputData: machines,
     comparator: getComparator(order, orderBy),
     filterName,
+    command
   });
 
   const notFound = !dataFiltered.length && !!filterName;
@@ -264,6 +266,16 @@ useEffect(()=>{
           New User
         </Button> */}
          <Stack direction="row" justifyContent="flex-end" spacing={2} className="p-3">
+         <div className="d-flex flex-column">
+      <h5>Serach Command:</h5>
+      <input
+        type="text"
+        className="form-control"
+        name="command"
+      
+        onChange={(e) => setCommand(e.target.value)}
+      />
+    </div>
          <div className="d-flex flex-column me-2">
       <h5>Start Date:</h5>
       <input
@@ -324,7 +336,7 @@ useEffect(()=>{
                 headLabel={[
                   { id: 'id', label: 'Sr.No' },
                   { id: 'devceId', label: 'Serial Number'},
-                  { id: 'TCresponse', label: 'TC RESPONSE' },
+                  { id: 'TCresponse', label: 'PACKET' },
                   { id: 'date', label: `Date & Time` },
                
                
