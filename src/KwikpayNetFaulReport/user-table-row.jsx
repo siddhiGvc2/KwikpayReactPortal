@@ -42,28 +42,29 @@ export default function UserTableRow({
   };
 
 
-  function parseToNigerianTime(dateStr) {
-    const year = parseInt(dateStr.slice(0, 2), 10) + 2000;
-    const day = parseInt(dateStr.slice(2, 4), 10);
-    const month = parseInt(dateStr.slice(4, 6), 10) - 1; // JavaScript months are 0-indexed
+  function convertToIST(dateStr) {
+    // Extract parts from ddmmyyhhmmss
+    const day = parseInt(dateStr.slice(0, 2), 10);
+    const month = parseInt(dateStr.slice(2, 4), 10) - 1; // JavaScript months are 0-indexed
+    const year = 2000 + parseInt(dateStr.slice(4, 6), 10);
     const hour = parseInt(dateStr.slice(6, 8), 10);
     const minute = parseInt(dateStr.slice(8, 10), 10);
     const second = parseInt(dateStr.slice(10, 12), 10);
   
-    const dateUTC = new Date(Date.UTC(year, month, day, hour, minute, second));
+    // Create date in UTC
+    const utcDate = new Date(Date.UTC(year, month, day, hour, minute, second));
   
+    // Format in IST (Asia/Kolkata)
     const options = {
-      timeZone: 'Africa/Lagos',
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
+      timeZone: 'Asia/Kolkata',
+   
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
       hour12: false,
     };
   
-    return new Intl.DateTimeFormat('en-NG', options).format(dateUTC);
+    return new Intl.DateTimeFormat('en-IN', options).format(utcDate);
   }
   return (
     <>
@@ -84,7 +85,7 @@ export default function UserTableRow({
           </Stack>
         </TableCell>
 
-        <TableCell>{parseToNigerianTime(row.NetworkFailPeriod.split(" to ")[0])} TO {parseToNigerianTime(row.NetworkFailPeriod.split(" to ")[1])}</TableCell>
+        <TableCell>{convertToIST(row.NetworkFailPeriod.split(" to ")[0])} TO {convertToIST(row.NetworkFailPeriod.split(" to ")[1])}</TableCell>
     
         <TableCell>
         {new Date(row.createdAt).toLocaleString('en-IN', {
