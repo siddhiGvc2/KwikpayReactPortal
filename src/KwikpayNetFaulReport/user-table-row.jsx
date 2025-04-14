@@ -12,9 +12,11 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
 // import Label from 'src/components/label';
-import Iconify from './components/iconify';
+import Iconify from '../components/iconify';
 
 // ----------------------------------------------------------------------
+
+
 
 export default function UserTableRow({
   sr,
@@ -39,6 +41,30 @@ export default function UserTableRow({
     setOpen(null);
   };
 
+
+  function parseToNigerianTime(dateStr) {
+    const year = parseInt(dateStr.slice(0, 2), 10) + 2000;
+    const day = parseInt(dateStr.slice(2, 4), 10);
+    const month = parseInt(dateStr.slice(4, 6), 10) - 1; // JavaScript months are 0-indexed
+    const hour = parseInt(dateStr.slice(6, 8), 10);
+    const minute = parseInt(dateStr.slice(8, 10), 10);
+    const second = parseInt(dateStr.slice(10, 12), 10);
+  
+    const dateUTC = new Date(Date.UTC(year, month, day, hour, minute, second));
+  
+    const options = {
+      timeZone: 'Africa/Lagos',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    };
+  
+    return new Intl.DateTimeFormat('en-NG', options).format(dateUTC);
+  }
   return (
     <>
       <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
@@ -58,7 +84,7 @@ export default function UserTableRow({
           </Stack>
         </TableCell>
 
-        <TableCell>{row.TCResponse}</TableCell>
+        <TableCell>{parseToNigerianTime(row.NetworkFailPeriod.split(" to ")[0])} TO {parseToNigerianTime(row.NetworkFailPeriod.split(" to ")[1])}</TableCell>
     
         <TableCell>
         {new Date(row.createdAt).toLocaleString('en-IN', {
