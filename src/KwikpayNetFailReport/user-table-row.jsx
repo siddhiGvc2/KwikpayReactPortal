@@ -42,30 +42,34 @@ export default function UserTableRow({
   };
 
 
-  function convertToIST(dateStr) {
-    // Extract parts from ddmmyyhhmmss
-    const day = parseInt(dateStr.slice(0, 2), 10);
-    const month = parseInt(dateStr.slice(2, 4), 10) - 1; // JavaScript months are 0-indexed
-    const year = 2000 + parseInt(dateStr.slice(4, 6), 10);
-    const hour = parseInt(dateStr.slice(6, 8), 10);
-    const minute = parseInt(dateStr.slice(8, 10), 10);
-    const second = parseInt(dateStr.slice(10, 12), 10);
+  const convertToIST = (timestamp) => {
+    if (timestamp.length !== 12) return "Invalid timestamp";
   
-    // Create date in UTC
-    const utcDate = new Date(Date.UTC(year, month, day, hour, minute, second));
+    const year = `20${timestamp.substring(0, 2)}`;
+    const month = timestamp.substring(2, 4);
+    const day = timestamp.substring(4, 6);
+    const hour = timestamp.substring(6, 8);
+    const minute = timestamp.substring(8, 10);
+    const second = timestamp.substring(10, 12);
   
-    // Format in IST (Asia/Kolkata)
-    const options = {
-      timeZone: 'Asia/Kolkata',
+    // Create a date object (note: month is 0-indexed in JS)
+    const date = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}+05:30`);
+  
+    // Format to "DD-MM-YYYY HH:mm:ss"
+    const formatted = date.toLocaleString("en-IN", {
+      timeZone: "Asia/Kolkata",
    
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
       hour12: false,
-    };
+    });
   
-    return new Intl.DateTimeFormat('en-IN', options).format(utcDate);
-  }
+    return formatted;
+  };
+  
+  
+  
   return (
     <>
       <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>

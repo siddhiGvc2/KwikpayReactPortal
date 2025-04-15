@@ -45,7 +45,7 @@ export const AllNetFailResponse=async(startDate,endDate)=> {
     }
 }
 
-export const AllPoerFailResponse=async(startDate,endDate)=> {
+export const AllPowerFailResponse=async(startDate,endDate)=> {
   try {
       const data={
           startDate,
