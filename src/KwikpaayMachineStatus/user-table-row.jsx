@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Stack from '@mui/material/Stack';
@@ -30,7 +30,9 @@ export default function UserTableRow({
   beat,
   ward,
   handleClick,
+  data,
 }) {
+  const [startTime,setStartTime]=useState('');
   const [open, setOpen] = useState(null);
 
   const handleOpenMenu = (event) => {
@@ -54,6 +56,17 @@ export default function UserTableRow({
 
     return fomattedTime;
   };
+
+  useEffect(()=>{
+       if(row.Status==null)
+       {
+          console.log(data[1].DateTimeOfStatus);
+          setStartTime(data[1].DateTimeOfStatus);
+       }
+       else{
+          setStartTime(row.LastHBT);
+       }
+  },[row.Status])
   
   return (
     <>
@@ -74,7 +87,7 @@ export default function UserTableRow({
           </Stack>
         </TableCell>
 
-        <TableCell>{convertToIST(row.LastHBT)}</TableCell>
+        <TableCell>{convertToIST(startTime)}</TableCell>
         <TableCell>{row.DateTimeOfStatus ? convertToIST( row.DateTimeOfStatus):""}</TableCell>
         <TableCell>{row.Status==3 ?"New Registration": row.Status==2 ? "Power Fail" : row.Status==1 ? "No Network" : "Machine Working"}</TableCell>
         <TableCell>

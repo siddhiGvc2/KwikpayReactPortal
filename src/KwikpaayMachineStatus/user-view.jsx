@@ -77,6 +77,7 @@ export default function KwikpayPowerFailedReport() {
   const [showAlert, setShowAlert] = useState(false);
   const [message,setMessage]=useState("");
   const [type,setType]=useState("");
+  const [lastRow,setLastRow]=useState("");
   const showAlertMessage = () => {
       setShowAlert(true);
   
@@ -109,6 +110,7 @@ export default function KwikpayPowerFailedReport() {
 useEffect(()=>{
   GetMachineStatus(startDate,endDate).then((res)=>{
     setMachines(res);
+    
    })
   const Interval=setInterval(()=>{
     GetMachineStatus(startDate,endDate).then((res)=>{
@@ -362,6 +364,7 @@ useEffect(()=>{
                       ward={row.ward}
                       beat={row.beat}
                       row={row}
+                      data={machines}
                       // isVerified={row.isVerified}
                       // selected={selected.indexOf(row.name) !== -1}
                       handleClick={(event) => handleClick(event, row.name)}
