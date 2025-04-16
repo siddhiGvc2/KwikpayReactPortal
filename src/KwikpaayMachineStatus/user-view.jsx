@@ -19,7 +19,7 @@ import TablePagination from '@mui/material/TablePagination';
 import { GetClentNameDetails} from '../_mock/customers';
 import { mapping,AllMachines} from '../_mock/AllMachines';
 
-import {AllPowerFailResponse } from '../_mock/Kwikpay';
+import { GetMachineStatus } from '../_mock/Kwikpay';
 
 import Scrollbar from '../components/scrollbar';
 
@@ -51,7 +51,7 @@ const style = {
 
 //  Users ui started here
 
-export default function KwikpayMachineStatus() {
+export default function KwikpayPowerFailedReport() {
   const [command,setCommand]=useState('');
   const [startDate,setStartDate]=useState(moment().format('YYYY-MM-DD'));
   const [endDate,setEndDate]=useState(moment().format('YYYY-MM-DD'));
@@ -107,11 +107,11 @@ export default function KwikpayMachineStatus() {
   };
 
 useEffect(()=>{
-  AllPowerFailResponse(startDate,endDate).then((res)=>{
+  GetMachineStatus(startDate,endDate).then((res)=>{
     setMachines(res);
    })
   const Interval=setInterval(()=>{
-    AllPowerFailResponse(startDate,endDate).then((res)=>{
+    GetMachineStatus(startDate,endDate).then((res)=>{
       setMachines(res);
      })
 
@@ -260,7 +260,7 @@ useEffect(()=>{
     <Container maxWidth="xxl">
       {/* createMapping button */}
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h5">Kwikpay Power Failed Time Period</Typography>
+        <Typography variant="h5">Kwikpay Device Status</Typography>
         {/* <button type='button' className="btn btn-sm btn-warning mx-2 text-white float-right" id="btn-mapping" onClick={handleModalOpen}>Create
                         Mapping</button> */}
 
@@ -337,8 +337,10 @@ useEffect(()=>{
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
                   { id: 'id', label: 'Sr.No' },
-                  { id: 'devceId', label: 'Serial Number'},
-                  { id: 'TCresponse', label: 'Faild Duration' },
+                  { id: 'MachineNumber', label: 'Serial Number'},
+                  { id: 'LastHBT', label: 'Start Time' },
+                  { id: 'DateTimeOfStatus', label: 'End Time' },
+                  { id: 'Status', label: 'Status' },
                   { id: 'date', label: `Date & Time` },
                
                
