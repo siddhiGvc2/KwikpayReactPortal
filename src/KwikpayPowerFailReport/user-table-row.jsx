@@ -89,7 +89,7 @@ export default function UserTableRow({
 
         <TableCell>{convertToIST(row.NetworkFailPeriod.split(" to ")[0])} TO {convertToIST(row.NetworkFailPeriod.split(" to ")[1])}</TableCell>
     
-        <TableCell>
+        {/* <TableCell>
         {new Date(row.createdAt).toLocaleString('en-IN', {
           timeZone: 'Asia/Kolkata',
           day: '2-digit',
@@ -100,9 +100,9 @@ export default function UserTableRow({
           second: '2-digit',
           hour12: true,
         })}
-      </TableCell>
+      </TableCell> */}
 
-      {/* <TableCell>
+      <TableCell>
       {new Date(row.createdAt).toLocaleString('en-GB', {
         timeZone: 'Europe/London',
         day: '2-digit',
@@ -113,7 +113,7 @@ export default function UserTableRow({
         second: '2-digit',
         hour12: true,
       })}
-    </TableCell> */}
+    </TableCell>
 
 
         

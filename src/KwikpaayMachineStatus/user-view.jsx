@@ -364,7 +364,7 @@ useEffect(()=>{
                       ward={row.ward}
                       beat={row.beat}
                       row={row}
-                      data={machines}
+                      data={dataFiltered}
                       // isVerified={row.isVerified}
                       // selected={selected.indexOf(row.name) !== -1}
                       handleClick={(event) => handleClick(event, row.name)}

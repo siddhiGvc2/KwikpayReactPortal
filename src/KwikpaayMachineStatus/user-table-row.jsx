@@ -46,7 +46,7 @@ export default function UserTableRow({
 
   const convertToIST = (timestamp) => {
     const fomattedTime=new Date(timestamp).toLocaleString('en-IN', {
-      timeZone: 'Asia/Kolkata',
+      timeZone: 'UTC',
     
       hour: '2-digit',
       minute: '2-digit',
@@ -90,7 +90,7 @@ export default function UserTableRow({
         <TableCell>{convertToIST(startTime)}</TableCell>
         <TableCell>{row.DateTimeOfStatus ? convertToIST( row.DateTimeOfStatus):""}</TableCell>
         <TableCell>{row.Status==3 ?"New Registration": row.Status==2 ? "Power Fail" : row.Status==1 ? "No Network" : "Machine Working"}</TableCell>
-        <TableCell>
+        {/* <TableCell>
         {new Date(row.createdAt).toLocaleString('en-IN', {
           timeZone: 'Asia/Kolkata',
           day: '2-digit',
@@ -99,20 +99,17 @@ export default function UserTableRow({
       
           hour12: true,
         })}
-      </TableCell>
+      </TableCell> */}
 
-      {/* <TableCell>
+      <TableCell>
       {new Date(row.createdAt).toLocaleString('en-GB', {
-        timeZone: 'Europe/London',
+        timeZone: 'UTC',
         day: '2-digit',
         month: '2-digit',
         year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: true,
+      
       })}
-    </TableCell> */}
+    </TableCell>
 
 
         
